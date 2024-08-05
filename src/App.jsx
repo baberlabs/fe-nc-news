@@ -1,8 +1,22 @@
+import { Route, Routes } from "react-router-dom";
+import Home from "./pages/Home";
+import Articles from "./pages/Articles";
+import Article from "./pages/Article";
+import Login from "./pages/Login";
+import Header from "./components/Header";
+import Navigation from "./components/Navigation";
+
 export default function App() {
   return (
-    <section className="flex min-h-screen flex-col items-center justify-center gap-2">
-      <h1 className="text-2xl font-black">Northcoders News</h1>
-      <p className="">Made by Baber Khan</p>
-    </section>
+    <>
+      <Header />
+      <Navigation />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/articles" element={<Articles />} />
+        <Route path="/article" element={<Article />} />
+        <Route path="/login" element={<Login />} />
+      </Routes>
+    </>
   );
 }
