@@ -56,7 +56,13 @@ export function ButtonsContainer({ children, self }) {
   return <div className={`flex flex-row gap-4 self-${self}`}>{children}</div>;
 }
 
-export function Button({ children, color, inc_votes, setCurrentVotes }) {
+export function Button({
+  children,
+  color,
+  inc_votes,
+  setCurrentVotes,
+  setVotesError,
+}) {
   const { article_id } = useParams();
 
   function handleVote() {
@@ -64,6 +70,10 @@ export function Button({ children, color, inc_votes, setCurrentVotes }) {
       setCurrentVotes((previousVotes) => previousVotes + inc_votes);
       voteArticle(article_id, inc_votes).catch(() => {
         setCurrentVotes((previousVotes) => previousVotes - inc_votes);
+        setVotesError(true);
+        setTimeout(() => {
+          setVotesError(false);
+        }, 3000);
       });
     }
   }
