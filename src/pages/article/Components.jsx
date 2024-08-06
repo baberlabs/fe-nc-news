@@ -1,5 +1,6 @@
 import formatDate from "../../utilities/formatDate";
-import { Link } from "react-router-dom";
+import { voteArticle } from "../../utilities/api";
+import { Link, useParams } from "react-router-dom";
 import CommentItem from "./CommentItem";
 
 export function ArticleLoadingText() {
@@ -55,11 +56,21 @@ export function ButtonsContainer({ children, self }) {
   return <div className={`flex flex-row gap-4 self-${self}`}>{children}</div>;
 }
 
-export function Button({ children, color, handleClick }) {
+export function Button({ children, color, inc_votes, setCurrentVotes }) {
+  const { article_id } = useParams();
+
+  function handleVote() {
+    if (inc_votes) {
+      setCurrentVotes((previousVotes) => previousVotes + inc_votes);
+      voteArticle(article_id, inc_votes).catch(() => {
+        setCurrentVotes((previousVotes) => previousVotes - inc_votes);
+      });
+    }
+  }
   return (
     <button
       className={`rounded-xl bg-${color}-700 w-fit px-4 py-2 text-sm font-bold text-white`}
-      onClick={handleClick}
+      onClick={handleVote}
     >
       {children}
     </button>
