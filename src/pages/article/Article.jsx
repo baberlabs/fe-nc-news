@@ -1,4 +1,5 @@
 import { useParams } from "react-router-dom";
+import { useState } from "react";
 
 import Comments from "./Comments";
 
@@ -11,6 +12,8 @@ import {
   Body,
   CountsContainer,
   Count,
+  VotesErrorText,
+  VotesNotLoggedInErrorText,
   ButtonsContainer,
   Button,
   ArticleLoadingText,
@@ -21,9 +24,11 @@ import useVotes from "./useVotes";
 
 export default function Article() {
   const { article_id } = useParams();
-
   const { isLoading, article } = useArticle(article_id);
   const { currentVotes, setCurrentVotes } = useVotes(article.votes);
+
+  const [votesError, setVotesError] = useState(false);
+  const [votesNotLoggedInError, setVotesNotLoggedInError] = useState(false);
 
   return (
     <section className="p-4 md:p-8">
@@ -42,12 +47,16 @@ export default function Article() {
             </Count>
             <Count label="comments">{article.comment_count}</Count>
           </CountsContainer>
+          {votesError && <VotesErrorText />}
+          {votesNotLoggedInError && <VotesNotLoggedInErrorText />}
           <ButtonsContainer self="start">
             <Button
               color="green"
               inc_votes={1}
               votes={currentVotes}
               setCurrentVotes={setCurrentVotes}
+              setVotesError={setVotesError}
+              setVotesNotLoggedInError={setVotesNotLoggedInError}
             >
               Upvote
             </Button>
@@ -56,10 +65,11 @@ export default function Article() {
               inc_votes={-1}
               votes={currentVotes}
               setCurrentVotes={setCurrentVotes}
+              setVotesError={setVotesError}
+              setVotesNotLoggedInError={setVotesNotLoggedInError}
             >
               Downvote
             </Button>
-            <Button color="gray">Comments</Button>
           </ButtonsContainer>
           <Comments />
         </div>

@@ -18,5 +18,5 @@ export default function useComments(article_id, commentsPage) {
     });
   }, [article_id, commentsPage]);
 
-  return { areCommentsLoading, comments, totalCount };
+  return { areCommentsLoading, comments, setComments, totalCount };
 }
