@@ -25,3 +25,9 @@ export function getCommentsByArticleId(article_id, page) {
   };
   return api.get(route, options).then(({ data }) => data);
 }
+
+export function voteArticle(article_id, inc_votes) {
+  const route = `/articles/${article_id}`;
+  const options = { inc_votes };
+  return api.patch(route, options).then(({ data }) => data);
+}

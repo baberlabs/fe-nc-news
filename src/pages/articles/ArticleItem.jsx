@@ -12,7 +12,7 @@ export default function ArticleItem({ article }) {
         <Date date={article.created_at} />
         <CountsContainer>
           <Count label="votes">{article.votes}</Count>
-          <Count label="comments">{article.comments}</Count>
+          <Count label="comments">{article.comment_count}</Count>
         </CountsContainer>
       </div>
     </li>
