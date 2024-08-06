@@ -2,6 +2,8 @@ import formatDate from "../../utilities/formatDate";
 import { voteArticle } from "../../utilities/api";
 import { Link, useParams } from "react-router-dom";
 import CommentItem from "./CommentItem";
+import { useContext } from "react";
+import { LoggedInUserContext } from "../../contexts/LoggedInUserProvider";
 
 export function ArticleLoadingText() {
   return <p>Loading...</p>;
@@ -62,10 +64,20 @@ export function Button({
   inc_votes,
   setCurrentVotes,
   setVotesError,
+  setVotesNotLoggedInError,
 }) {
   const { article_id } = useParams();
+  const { loggedInUser } = useContext(LoggedInUserContext);
 
   function handleVote() {
+    if (!loggedInUser?.username) {
+      setVotesNotLoggedInError(true);
+      setTimeout(() => {
+        setVotesNotLoggedInError(false);
+      }, 3000);
+      return;
+    }
+    setVotesNotLoggedInError(false);
     if (inc_votes) {
       setCurrentVotes((previousVotes) => previousVotes + inc_votes);
       voteArticle(article_id, inc_votes).catch(() => {
@@ -84,6 +96,22 @@ export function Button({
     >
       {children}
     </button>
+  );
+}
+
+export function VotesErrorText() {
+  return (
+    <p className="w-fit rounded-xl bg-red-200 px-4 py-2">
+      Sorry, that didn't work. Try again!
+    </p>
+  );
+}
+
+export function VotesNotLoggedInErrorText() {
+  return (
+    <p className="w-fit rounded-xl bg-red-200 px-4 py-2 text-sm">
+      Please login to vote
+    </p>
   );
 }
 
@@ -122,4 +150,39 @@ export function ButtonMoreComments({ setPage }) {
 
 export function NoMoreComponentsText() {
   return <p className="my-4 self-center">No More Comments</p>;
+}
+
+export function ButtonComment({ submitComment }) {
+  return (
+    <button
+      onClick={submitComment}
+      type="submit"
+      className="self-end rounded-xl bg-blue-700 px-4 py-2 text-sm font-bold text-white"
+    >
+      Comment
+    </button>
+  );
+}
+
+export function ButtonCommentDisabled() {
+  return (
+    <button
+      type="submit"
+      className="self-end rounded-xl bg-gray-300 px-4 py-2 text-sm font-bold text-black"
+      disabled
+    >
+      Commenting...
+    </button>
+  );
+}
+
+export function ButtonLogIn() {
+  return (
+    <Link
+      to="/login"
+      className="self-end rounded-xl bg-blue-700 px-4 py-2 text-sm font-bold text-white"
+    >
+      Log In To Comment
+    </Link>
+  );
 }

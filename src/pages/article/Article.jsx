@@ -12,6 +12,8 @@ import {
   Body,
   CountsContainer,
   Count,
+  VotesErrorText,
+  VotesNotLoggedInErrorText,
   ButtonsContainer,
   Button,
   ArticleLoadingText,
@@ -22,11 +24,11 @@ import useVotes from "./useVotes";
 
 export default function Article() {
   const { article_id } = useParams();
-
   const { isLoading, article } = useArticle(article_id);
   const { currentVotes, setCurrentVotes } = useVotes(article.votes);
 
   const [votesError, setVotesError] = useState(false);
+  const [votesNotLoggedInError, setVotesNotLoggedInError] = useState(false);
 
   return (
     <section className="p-4 md:p-8">
@@ -46,6 +48,7 @@ export default function Article() {
             <Count label="comments">{article.comment_count}</Count>
           </CountsContainer>
           {votesError && <VotesErrorText />}
+          {votesNotLoggedInError && <VotesNotLoggedInErrorText />}
           <ButtonsContainer self="start">
             <Button
               color="green"
@@ -53,6 +56,7 @@ export default function Article() {
               votes={currentVotes}
               setCurrentVotes={setCurrentVotes}
               setVotesError={setVotesError}
+              setVotesNotLoggedInError={setVotesNotLoggedInError}
             >
               Upvote
             </Button>
@@ -62,22 +66,14 @@ export default function Article() {
               votes={currentVotes}
               setCurrentVotes={setCurrentVotes}
               setVotesError={setVotesError}
+              setVotesNotLoggedInError={setVotesNotLoggedInError}
             >
               Downvote
             </Button>
-            <Button color="gray">Comments</Button>
           </ButtonsContainer>
           <Comments />
         </div>
       )}
     </section>
-  );
-}
-
-function VotesErrorText() {
-  return (
-    <p className="rounded-xl bg-red-200 px-4 py-2">
-      Sorry, that didn't work. Try again!
-    </p>
   );
 }
