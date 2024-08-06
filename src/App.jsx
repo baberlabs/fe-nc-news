@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
-import { LoggedInUserProvider } from "./contexts/LoggedInUserProvider";
+import { LoggedInUserProvider } from "./contexts/LoggedInUserContext";
 
 import Home from "./pages/home";
 import Articles from "./pages/articles";

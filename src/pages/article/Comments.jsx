@@ -1,4 +1,5 @@
-import useComments from "./useComments";
+import { useState } from "react";
+import { useParams } from "react-router-dom";
 
 import {
   CommentsHeading,
@@ -11,15 +12,14 @@ import {
   ButtonLogIn,
 } from "./Components";
 
-import { useContext, useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
-
-import { LoggedInUserContext } from "../../contexts/LoggedInUserProvider";
 import { postComment } from "../../utilities/api";
+
+import useComments from "./useComments";
+import { useLoggedInUser } from "../../contexts/LoggedInUserContext";
 
 export default function Comments({}) {
   const { article_id } = useParams();
-  const { loggedInUser } = useContext(LoggedInUserContext);
+  const { loggedInUser } = useLoggedInUser();
   const [page, setPage] = useState(1);
   const [commentInput, setCommentInput] = useState("");
   const [isPosting, setIsPosting] = useState(false);

@@ -1,9 +1,9 @@
-import { Link, NavLink } from "react-router-dom";
-import { useContext } from "react";
-import { LoggedInUserContext } from "../contexts/LoggedInUserProvider";
+import { NavLink } from "react-router-dom";
+
+import { useLoggedInUser } from "../contexts/LoggedInUserContext";
 
 export default function Navigation() {
-  const { loggedInUser } = useContext(LoggedInUserContext);
+  const { loggedInUser } = useLoggedInUser();
 
   const className = {
     active: "font-bold text-blue-500",
@@ -53,7 +53,7 @@ function ButtonLogIn() {
 }
 
 function ButtonLogOut() {
-  const { setLoggedInUser } = useContext(LoggedInUserContext);
+  const { setLoggedInUser } = useLoggedInUser();
 
   function handleClick() {
     setLoggedInUser({});

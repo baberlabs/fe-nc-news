@@ -1,9 +1,10 @@
+import { Link, useParams } from "react-router-dom";
+
+import CommentItem from "./CommentItem";
+
 import formatDate from "../../utilities/formatDate";
 import { voteArticle } from "../../utilities/api";
-import { Link, useParams } from "react-router-dom";
-import CommentItem from "./CommentItem";
-import { useContext } from "react";
-import { LoggedInUserContext } from "../../contexts/LoggedInUserProvider";
+import { useLoggedInUser } from "../../contexts/LoggedInUserContext";
 
 export function ArticleLoadingText() {
   return <p>Loading...</p>;
@@ -67,7 +68,7 @@ export function Button({
   setVotesNotLoggedInError,
 }) {
   const { article_id } = useParams();
-  const { loggedInUser } = useContext(LoggedInUserContext);
+  const { loggedInUser } = useLoggedInUser();
 
   function handleVote() {
     if (!loggedInUser?.username) {
