@@ -4,12 +4,24 @@ const api = axios.create({
   baseURL: "https://be-nc-news-8igb.onrender.com/api",
 });
 
-export function getArticles() {
-  return api.get("/articles").then((response) => response.data.articles);
+export function getArticles(page) {
+  const route = "/articles";
+  const options = {
+    params: { page },
+  };
+  return api.get(route, options).then((response) => response.data);
 }
 
 export function getArticleById(article_id) {
   return api
     .get(`/articles/${article_id}`)
     .then((response) => response.data.article);
+}
+
+export function getCommentsByArticleId(article_id, page) {
+  const route = `/articles/${article_id}/comments`;
+  const options = {
+    params: { page },
+  };
+  return api.get(route, options).then(({ data }) => data);
 }

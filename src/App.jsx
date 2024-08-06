@@ -1,8 +1,8 @@
 import { Route, Routes } from "react-router-dom";
-import Home from "./pages/Home";
-import Articles from "./pages/Articles";
-import Article from "./pages/Article";
-import Login from "./pages/Login";
+import Home from "./pages/home";
+import Articles from "./pages/articles";
+import Article from "./pages/article";
+import Login from "./pages/login";
 import Header from "./components/Header";
 import Navigation from "./components/Navigation";
 
