@@ -91,7 +91,7 @@ export function Button({
     }
   }
 
-  // const colors = ["bg-blue-700", "bg-green-700"];
+  const colors = ["bg-blue-700", "bg-green-700"];
 
   return (
     <button
@@ -123,13 +123,31 @@ export function CommentsHeading() {
   return <h3 className="mt-2 text-2xl">Comments</h3>;
 }
 
-export function CommentsList({ comments }) {
+export function CommentsList({ comments, setComments }) {
   return (
     <ul className="flex flex-col gap-4">
       {comments.map((comment) => (
-        <CommentItem key={comment.comment_id} comment={comment} />
+        <CommentItem
+          key={comment.comment_id}
+          comment={comment}
+          setComments={setComments}
+        />
       ))}
     </ul>
+  );
+}
+
+export function CommentForm({ children }) {
+  return <form className="flex flex-col gap-4">{children}</form>;
+}
+
+export function CommentInputField({ ...restProps }) {
+  return (
+    <textarea
+      className="h-28 w-full resize-none rounded border border-gray-300 px-4 py-2"
+      placeholder="Write a public comment"
+      {...restProps}
+    ></textarea>
   );
 }
 

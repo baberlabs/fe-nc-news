@@ -11,3 +11,7 @@ export function postComment(article_id, username, body) {
     .post(`/articles/${article_id}/comments`, { username, body })
     .then(({ data }) => data);
 }
+
+export function deleteComment(comment_id) {
+  return api.delete(`/comments/${comment_id}`);
+}
