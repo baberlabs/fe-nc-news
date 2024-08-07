@@ -90,9 +90,12 @@ export function Button({
       });
     }
   }
+
+  // const colors = ["bg-blue-700", "bg-green-700"];
+
   return (
     <button
-      className={`rounded-xl bg-${color}-700 w-fit px-4 py-2 text-sm font-bold text-white`}
+      className={`w-fit rounded-xl bg-${color}-700 px-4 py-2 text-sm font-bold text-white`}
       onClick={handleVote}
     >
       {children}
