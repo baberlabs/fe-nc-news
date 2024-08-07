@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 
 import {
   CommentsHeading,
+  LoggedInAsText,
   CommentsList,
   CommentForm,
   CommentInputField,
@@ -62,10 +63,12 @@ export default function Comments({}) {
   const canComment = isLoggedIn && !isPosting;
   const canNotComment = isLoggedIn && isPosting;
 
+  console.log(loggedInUser);
   return (
     <>
       <CommentsHeading />
       <CommentForm>
+        {isLoggedIn && <LoggedInAsText user={loggedInUser} />}
         <CommentInputField onChange={updateCommentText} value={commentInput} />
         {!isLoggedIn && <ButtonLogIn />}
         {canComment && <ButtonComment submitComment={submitComment} />}
