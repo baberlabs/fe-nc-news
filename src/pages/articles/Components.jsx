@@ -1,7 +1,33 @@
 import ArticleItem from "./ArticleItem";
+import capitaliseString from "../../utilities/capitaliseString";
 
-export function ArticlesHeading() {
-  return <h2 className="hidden">Articles</h2>;
+export function TopicDropDown({ onChange, selectedTopic, topics }) {
+  return (
+    <div className="flex w-fit flex-row items-center gap-4 self-end">
+      <label htmlFor="topic" className="">
+        View by topic
+      </label>
+      <select
+        onChange={onChange}
+        name="topic"
+        id="topic"
+        value={selectedTopic}
+        className="w-32 appearance-none px-4 py-2"
+      >
+        <option value="all">All</option>
+        {topics.map((topic) => (
+          <option className="" key={topic.slug} value={topic.slug}>
+            {capitaliseString(topic.slug)}
+          </option>
+        ))}
+      </select>
+    </div>
+  );
+}
+
+export function ArticlesHeading({ children, isLoading }) {
+  const loading = isLoading ? "text-gray-400" : "";
+  return <h2 className={`text-xl font-bold ${loading}`}>{children}</h2>;
 }
 
 export function ArticlesList({ articles }) {
@@ -18,16 +44,9 @@ export function LoadingText() {
   return <p className="self-center">Articles Loading...</p>;
 }
 
-export function ButtonMore({ setPage }) {
-  function handleMoreArticles() {
-    setPage((previousPage) => previousPage + 1);
-  }
-
+export function ButtonMore({ onClick }) {
   return (
-    <button
-      className="self-center text-blue-500 underline"
-      onClick={handleMoreArticles}
-    >
+    <button className="self-center text-blue-500 underline" onClick={onClick}>
       More Articles...
     </button>
   );

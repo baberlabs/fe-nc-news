@@ -123,6 +123,16 @@ export function CommentsHeading() {
   return <h3 className="mt-2 text-2xl">Comments</h3>;
 }
 
+export function LoggedInAsText({ user }) {
+  return (
+    <p className="flex flex-row gap-1 italic text-gray-500">
+      <span>Logged in as</span>
+      <span className="font-bold">{user.name}</span>
+      <span>({user.username})</span>
+    </p>
+  );
+}
+
 export function CommentsList({ comments, setComments }) {
   return (
     <ul className="flex flex-col gap-4">
@@ -206,5 +216,13 @@ export function ButtonLogIn() {
     >
       Log In To Comment
     </Link>
+  );
+}
+
+export function CommentSubmitError() {
+  return (
+    <p className="self-end rounded-xl bg-red-200 px-4 py-2">
+      Comment unsuccessful! Try again?
+    </p>
   );
 }

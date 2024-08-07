@@ -3,7 +3,10 @@ import formatDate from "../../utilities/formatDate";
 
 export default function ArticleItem({ article }) {
   return (
-    <li className="max-w-[500px] rounded border border-gray-300 shadow md:max-w-[400px]">
+    <li
+      id={article.article_id}
+      className="max-w-[500px] rounded border border-gray-300 shadow md:max-w-[400px]"
+    >
       <Image src={article.article_img_url} topic={article.topic} />
       <div className="flex flex-col gap-2 p-4">
         <Topic topic={article.topic} />
