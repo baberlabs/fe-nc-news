@@ -16,6 +16,8 @@ export default function Login() {
 
   const { loggedInUser, hasLoggedIn, isError } = useUsername(username);
 
+  const validUsernames = ["grumpy19", "tickle122", "jessjelly"];
+
   return (
     <section className="flex flex-col items-center gap-16 p-4 md:p-8">
       <h2 className="hidden">Login</h2>
@@ -34,6 +36,16 @@ export default function Login() {
               User does not exist
             </p>
           )}
+        </div>
+        <div className="flex flex-col gap-4 rounded-xl bg-blue-100 p-4 hover:bg-blue-50">
+          <h3 className="text-sm font-bold">Valid Usernames</h3>
+          <ul className="flex flex-col gap-2">
+            {validUsernames.map((validUsername, index) => (
+              <li className="text-sm" key={`valid-username-${index}`}>
+                {validUsername}
+              </li>
+            ))}
+          </ul>
         </div>
         <button
           onClick={handleClick}
