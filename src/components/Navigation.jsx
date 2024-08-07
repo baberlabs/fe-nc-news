@@ -1,69 +1,53 @@
-import { Link, NavLink } from "react-router-dom";
-import { useContext } from "react";
-import { LoggedInUserContext } from "../contexts/LoggedInUserProvider";
+import { NavLink } from "react-router-dom";
+
+import { useLoggedInUser } from "../contexts/LoggedInUserContext";
 
 export default function Navigation() {
-  const { loggedInUser } = useContext(LoggedInUserContext);
-
-  const className = {
-    active: "font-bold text-blue-500",
-    default: "font-semibold text-white",
-  };
+  const { loggedInUser, setLoggedInUser } = useLoggedInUser();
 
   return (
     <nav className="flex flex-row gap-4 bg-gray-800 px-4 py-2 shadow">
-      <NavLink
-        to="/"
-        className={({ isActive }) =>
-          isActive ? className.active : className.default
-        }
-      >
-        Home
-      </NavLink>
-      <NavLink
-        to="/articles"
-        className={({ isActive }) =>
-          isActive ? className.active : className.default
-        }
-      >
-        Articles
-      </NavLink>
-      {!loggedInUser?.username ? <ButtonLogIn /> : <ButtonLogOut />}
+      <LinkButton link="/">Home</LinkButton>
+      <LinkButton link="/articles">Articles</LinkButton>
+      {!loggedInUser?.username ? (
+        <LinkButton link="/login" variant="right">
+          Login
+        </LinkButton>
+      ) : (
+        <ButtonLogOut onClick={() => setLoggedInUser({})} />
+      )}
     </nav>
   );
 }
 
-function ButtonLogIn() {
+function LinkButton({ children, link, variant }) {
   const className = {
     active: "font-bold text-blue-500",
     default: "font-semibold text-white",
   };
+
+  if (variant === "right") {
+    className.active += " flex-grow text-right";
+    className.default += " flex-grow text-right";
+  }
+
   return (
     <NavLink
-      to="/login"
+      to={link}
       className={({ isActive }) =>
-        isActive
-          ? `${className.active} flex-grow text-right`
-          : `${className.default} flex-grow text-right`
+        isActive ? `${className.active}` : `${className.default}`
       }
     >
-      Login
+      {children}
     </NavLink>
   );
 }
 
-function ButtonLogOut() {
-  const { setLoggedInUser } = useContext(LoggedInUserContext);
-
-  function handleClick() {
-    setLoggedInUser({});
-    localStorage.setItem("currentUser", JSON.stringify({}));
-  }
+function ButtonLogOut({ onClick }) {
   return (
     <button
-      onClick={handleClick}
-      to="/logout"
       className="flex-grow text-right font-bold text-red-500"
+      onClick={onClick}
     >
       Logout
     </button>

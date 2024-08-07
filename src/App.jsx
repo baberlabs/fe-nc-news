@@ -1,4 +1,7 @@
-import { Route, Routes } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+
+import { LoggedInUserProvider } from "./contexts/LoggedInUserContext";
+
 import Home from "./pages/home";
 import Articles from "./pages/articles";
 import Article from "./pages/article";
@@ -8,15 +11,19 @@ import Navigation from "./components/Navigation";
 
 export default function App() {
   return (
-    <>
-      <Header />
-      <Navigation />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/articles" element={<Articles />} />
-        <Route path="/articles/:article_id" element={<Article />} />
-        <Route path="/login" element={<Login />} />
-      </Routes>
-    </>
+    <LoggedInUserProvider>
+      <Router>
+        <Header />
+        <Navigation />
+        <main>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/articles" element={<Articles />} />
+            <Route path="/articles/:article_id" element={<Article />} />
+            <Route path="/login" element={<Login />} />
+          </Routes>
+        </main>
+      </Router>
+    </LoggedInUserProvider>
   );
 }

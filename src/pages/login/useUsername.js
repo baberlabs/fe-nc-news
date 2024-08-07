@@ -1,19 +1,18 @@
 import { useEffect, useState } from "react";
-import { useContext } from "react";
-import { LoggedInUserContext } from "../../contexts/LoggedInUserProvider";
+
 import { getUser } from "../../utilities/api";
+import { useLoggedInUser } from "../../contexts/LoggedInUserContext";
 
 export default function useUsername(username) {
   const [isError, setIsError] = useState(false);
   const [hasLoggedIn, setHasLoggedIn] = useState(false);
-  const { loggedInUser, setLoggedInUser } = useContext(LoggedInUserContext);
+  const { loggedInUser, setLoggedInUser } = useLoggedInUser();
 
   useEffect(() => {
     if (username) {
       getUser(username)
         .then((user) => {
           setLoggedInUser(user);
-          localStorage.setItem("currentUser", JSON.stringify(user));
           setIsError(false);
           if (user) {
             setHasLoggedIn(true);
@@ -24,7 +23,6 @@ export default function useUsername(username) {
         })
         .catch(() => {
           setLoggedInUser({});
-          localStorage.setItem("currentUser", JSON.stringify({}));
           setHasLoggedIn(false);
           setIsError(true);
         });

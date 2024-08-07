@@ -1,8 +1,11 @@
-import useComments from "./useComments";
+import { useState } from "react";
+import { useParams } from "react-router-dom";
 
 import {
   CommentsHeading,
   CommentsList,
+  CommentForm,
+  CommentInputField,
   CommentsLoadingText,
   ButtonMoreComments,
   NoMoreComponentsText,
@@ -11,19 +14,18 @@ import {
   ButtonLogIn,
 } from "./Components";
 
-import { useContext, useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
-
-import { LoggedInUserContext } from "../../contexts/LoggedInUserProvider";
 import { postComment } from "../../utilities/api";
+
+import useComments from "./useComments";
+import { useLoggedInUser } from "../../contexts/LoggedInUserContext";
 
 export default function Comments({}) {
   const { article_id } = useParams();
-  const { loggedInUser } = useContext(LoggedInUserContext);
+  const { loggedInUser } = useLoggedInUser();
   const [page, setPage] = useState(1);
   const [commentInput, setCommentInput] = useState("");
   const [isPosting, setIsPosting] = useState(false);
-  const { isLoading, comments, setComments, totalCount } = useComments(
+  const { areCommentsLoading, comments, setComments, totalCount } = useComments(
     article_id,
     page,
   );
@@ -47,33 +49,24 @@ export default function Comments({}) {
       });
   }
 
-  const hasMoreComments = totalCount > comments.length && !isLoading;
-  const hasNoMoreComments = totalCount <= comments.length && !isLoading;
+  const hasMoreComments = totalCount > comments.length && !areCommentsLoading;
+  const hasNoMoreComments =
+    totalCount <= comments.length && !areCommentsLoading;
   const isLoggedIn = loggedInUser?.username;
-  const isCommenting = loggedInUser?.username && isPosting;
+  const canComment = isLoggedIn && !isPosting;
+  const canNotComment = isLoggedIn && isPosting;
 
   return (
     <>
       <CommentsHeading />
-      <form className="flex flex-col gap-4">
-        <textarea
-          onChange={updateCommentText}
-          name="new-comment"
-          id="new-comment"
-          className="h-28 w-full resize-none rounded border border-gray-300 px-4 py-2"
-          placeholder="Write a public comment"
-          value={commentInput}
-        ></textarea>
-        {!isLoggedIn ? (
-          <ButtonLogIn />
-        ) : isCommenting ? (
-          <ButtonCommentDisabled />
-        ) : (
-          <ButtonComment submitComment={submitComment} />
-        )}
-      </form>
-      <CommentsList comments={comments} />
-      {isLoading && <CommentsLoadingText />}
+      <CommentForm>
+        <CommentInputField onChange={updateCommentText} value={commentInput} />
+        {!isLoggedIn && <ButtonLogIn />}
+        {canComment && <ButtonComment submitComment={submitComment} />}
+        {canNotComment && <ButtonCommentDisabled />}
+      </CommentForm>
+      <CommentsList comments={comments} setComments={setComments} />
+      {areCommentsLoading && <CommentsLoadingText />}
       {hasMoreComments && <ButtonMoreComments setPage={setPage} />}
       {hasNoMoreComments && <NoMoreComponentsText />}
     </>

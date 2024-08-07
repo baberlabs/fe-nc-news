@@ -1,9 +1,10 @@
+import { Link, useParams } from "react-router-dom";
+
+import CommentItem from "./CommentItem";
+
 import formatDate from "../../utilities/formatDate";
 import { voteArticle } from "../../utilities/api";
-import { Link, useParams } from "react-router-dom";
-import CommentItem from "./CommentItem";
-import { useContext } from "react";
-import { LoggedInUserContext } from "../../contexts/LoggedInUserProvider";
+import { useLoggedInUser } from "../../contexts/LoggedInUserContext";
 
 export function ArticleLoadingText() {
   return <p>Loading...</p>;
@@ -67,7 +68,7 @@ export function Button({
   setVotesNotLoggedInError,
 }) {
   const { article_id } = useParams();
-  const { loggedInUser } = useContext(LoggedInUserContext);
+  const { loggedInUser } = useLoggedInUser();
 
   function handleVote() {
     if (!loggedInUser?.username) {
@@ -89,9 +90,12 @@ export function Button({
       });
     }
   }
+
+  const colors = ["bg-blue-700", "bg-green-700"];
+
   return (
     <button
-      className={`rounded-xl bg-${color}-700 w-fit px-4 py-2 text-sm font-bold text-white`}
+      className={`w-fit rounded-xl bg-${color}-700 px-4 py-2 text-sm font-bold text-white`}
       onClick={handleVote}
     >
       {children}
@@ -119,13 +123,31 @@ export function CommentsHeading() {
   return <h3 className="mt-2 text-2xl">Comments</h3>;
 }
 
-export function CommentsList({ comments }) {
+export function CommentsList({ comments, setComments }) {
   return (
     <ul className="flex flex-col gap-4">
       {comments.map((comment) => (
-        <CommentItem key={comment.comment_id} comment={comment} />
+        <CommentItem
+          key={comment.comment_id}
+          comment={comment}
+          setComments={setComments}
+        />
       ))}
     </ul>
+  );
+}
+
+export function CommentForm({ children }) {
+  return <form className="flex flex-col gap-4">{children}</form>;
+}
+
+export function CommentInputField({ ...restProps }) {
+  return (
+    <textarea
+      className="h-28 w-full resize-none rounded border border-gray-300 px-4 py-2"
+      placeholder="Write a public comment"
+      {...restProps}
+    ></textarea>
   );
 }
 
