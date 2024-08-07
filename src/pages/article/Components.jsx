@@ -208,3 +208,11 @@ export function ButtonLogIn() {
     </Link>
   );
 }
+
+export function CommentSubmitError() {
+  return (
+    <p className="self-end rounded-xl bg-red-200 px-4 py-2">
+      Comment unsuccessful! Try again?
+    </p>
+  );
+}

@@ -12,6 +12,7 @@ import {
   ButtonComment,
   ButtonCommentDisabled,
   ButtonLogIn,
+  CommentSubmitError,
 } from "./Components";
 
 import { postComment } from "../../utilities/api";
@@ -29,6 +30,7 @@ export default function Comments({}) {
     article_id,
     page,
   );
+  const [hasSubmitError, setHasSubmitError] = useState(false);
 
   function updateCommentText(e) {
     setCommentInput(e.target.value);
@@ -43,6 +45,10 @@ export default function Comments({}) {
       .then(({ comment }) => {
         setComments((previousComments) => [comment, ...previousComments]);
         setCommentInput("");
+      })
+      .catch(() => {
+        setHasSubmitError(true);
+        setTimeout(() => setHasSubmitError(false), 3000);
       })
       .finally(() => {
         setIsPosting(false);
@@ -64,6 +70,7 @@ export default function Comments({}) {
         {!isLoggedIn && <ButtonLogIn />}
         {canComment && <ButtonComment submitComment={submitComment} />}
         {canNotComment && <ButtonCommentDisabled />}
+        {hasSubmitError && <CommentSubmitError />}
       </CommentForm>
       <CommentsList comments={comments} setComments={setComments} />
       {areCommentsLoading && <CommentsLoadingText />}
