@@ -32,6 +32,7 @@ export default function Comments({}) {
     page,
   );
   const [hasSubmitError, setHasSubmitError] = useState(false);
+  const [submitError, setSubmitError] = useState("");
 
   function updateCommentText(e) {
     setCommentInput(e.target.value);
@@ -40,7 +41,13 @@ export default function Comments({}) {
   function submitComment(e) {
     e.preventDefault();
 
-    if (!commentInput.trim()) return;
+    if (!commentInput.trim()) {
+      setHasSubmitError(true);
+      setSubmitError("Comment cannot be empty!");
+      setTimeout(() => setHasSubmitError(false), 3000);
+      return;
+    }
+
     setIsPosting(true);
     postComment(article_id, loggedInUser?.username, commentInput)
       .then(({ comment }) => {
@@ -49,6 +56,7 @@ export default function Comments({}) {
       })
       .catch(() => {
         setHasSubmitError(true);
+        setSubmitError("Could not submit your comment, try again!");
         setTimeout(() => setHasSubmitError(false), 3000);
       })
       .finally(() => {
@@ -72,7 +80,7 @@ export default function Comments({}) {
         {!isLoggedIn && <ButtonLogIn />}
         {canComment && <ButtonComment submitComment={submitComment} />}
         {canNotComment && <ButtonCommentDisabled />}
-        {hasSubmitError && <CommentSubmitError />}
+        {hasSubmitError && <CommentSubmitError submitError={submitError} />}
       </CommentForm>
       <CommentsList comments={comments} setComments={setComments} />
       {areCommentsLoading && <CommentsLoadingText />}

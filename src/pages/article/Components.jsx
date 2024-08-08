@@ -230,10 +230,8 @@ export function ButtonLogIn() {
   );
 }
 
-export function CommentSubmitError() {
+export function CommentSubmitError({ submitError }) {
   return (
-    <p className="self-end rounded-xl bg-red-200 px-4 py-2">
-      Comment unsuccessful! Try again?
-    </p>
+    <p className="self-end rounded-xl bg-red-200 px-4 py-2">{submitError}</p>
   );
 }
