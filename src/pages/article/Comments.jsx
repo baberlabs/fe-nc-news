@@ -74,11 +74,15 @@ export default function Comments({}) {
   return (
     <>
       <CommentsHeading />
-      <CommentForm>
+      <CommentForm onSubmit={submitComment}>
         {isLoggedIn && <LoggedInAsText user={loggedInUser} />}
-        <CommentInputField onChange={updateCommentText} value={commentInput} />
+        <CommentInputField
+          onChange={updateCommentText}
+          value={commentInput}
+          onSubmit={submitComment}
+        />
         {!isLoggedIn && <ButtonLogIn />}
-        {canComment && <ButtonComment submitComment={submitComment} />}
+        {canComment && <ButtonComment />}
         {canNotComment && <ButtonCommentDisabled />}
         {hasSubmitError && <CommentSubmitError submitError={submitError} />}
       </CommentForm>
