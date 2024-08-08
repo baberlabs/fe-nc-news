@@ -63,7 +63,6 @@ export default function Comments({}) {
   const canComment = isLoggedIn && !isPosting;
   const canNotComment = isLoggedIn && isPosting;
 
-  console.log(loggedInUser);
   return (
     <>
       <CommentsHeading />

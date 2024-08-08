@@ -1,30 +1,6 @@
 import ArticleItem from "./ArticleItem";
 import capitaliseString from "../../utilities/capitaliseString";
 
-export function TopicDropDown({ onChange, selectedTopic, topics }) {
-  return (
-    <div className="flex w-fit flex-row items-center gap-4 self-end">
-      <label htmlFor="topic" className="">
-        View by topic
-      </label>
-      <select
-        onChange={onChange}
-        name="topic"
-        id="topic"
-        value={selectedTopic}
-        className="w-32 appearance-none px-4 py-2"
-      >
-        <option value="all">All</option>
-        {topics.map((topic) => (
-          <option className="" key={topic.slug} value={topic.slug}>
-            {capitaliseString(topic.slug)}
-          </option>
-        ))}
-      </select>
-    </div>
-  );
-}
-
 export function ArticlesHeading({ children, isLoading }) {
   const loading = isLoading ? "text-gray-400" : "";
   return <h2 className={`text-xl font-bold ${loading}`}>{children}</h2>;
