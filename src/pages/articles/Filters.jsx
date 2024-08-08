@@ -68,7 +68,7 @@ function DropDown({ children, label, ...restProps }) {
         {label}
       </label>
       <select
-        className="w-fit appearance-none py-2 pl-4 pr-8"
+        className="w-fit appearance-none rounded-xl bg-gray-200 py-2 pl-4 pr-8"
         id={id}
         {...restProps}
       >
