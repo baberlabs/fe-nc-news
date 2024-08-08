@@ -1,8 +1,8 @@
 import { api } from "./config";
 
-export function getArticles({ page, topic }) {
+export function getArticles({ ...params }) {
   return api
-    .get("/articles", { params: { page, topic } })
+    .get("/articles", { params: { ...params } })
     .then((response) => response.data);
 }
 
