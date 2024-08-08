@@ -29,11 +29,7 @@ export default function Filter({
       >
         <Options options={getTopicOptions(topics)} />
       </DropDown>
-      {hasArticlesError && (
-        <p className="self-end rounded-xl bg-red-200 px-4 py-2">
-          Please select a topic from the dropdown
-        </p>
-      )}
+
       <DropDown
         label="Sort by"
         onChange={(e) => handleSortByChange(e, setPage, setSearchParams)}
@@ -55,6 +51,11 @@ export default function Filter({
       >
         <Options options={{ desc: "Descending", asc: "Ascending" }} />
       </DropDown>
+      {hasArticlesError && (
+        <p className="self-end rounded-xl bg-red-200 px-4 py-2">
+          Please select valid options here
+        </p>
+      )}
     </>
   );
 }
