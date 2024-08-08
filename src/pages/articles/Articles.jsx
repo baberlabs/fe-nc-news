@@ -11,25 +11,31 @@ import {
   LoadingText,
   ButtonMore,
   NoMoreText,
+  ArticlesError,
 } from "./Components";
 
 export default function Articles() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const topic = searchParams.get("topic") || "all";
+  const topic = searchParams.get("topic") || "select";
   const sortBy = searchParams.get("sort_by") || "created_at";
   const order = searchParams.get("order") || "desc";
 
   const [page, setPage] = useState(1);
 
-  const { isLoading, articles, totalCount } = useArticles({
-    page,
-    topic: topic === "all" ? undefined : topic,
-    sort_by: sortBy,
-    order,
-  });
+  const { isLoading, articles, articlesError, hasArticlesError, totalCount } =
+    useArticles({
+      page,
+      topic: topic === "all" || topic === "select" ? undefined : topic,
+      sort_by: sortBy,
+      order,
+      setSearchParams,
+    });
 
-  const hasMoreArticles = totalCount > articles.length && !isLoading;
-  const hasNoMoreArticles = totalCount <= articles.length && !isLoading;
+  const hasMoreArticles =
+    totalCount > articles.length && !isLoading && !hasArticlesError;
+
+  const hasNoMoreArticles =
+    totalCount <= articles.length && !isLoading && !hasArticlesError;
 
   return (
     <section className="flex flex-col gap-8 px-4 py-8">
@@ -39,12 +45,19 @@ export default function Articles() {
         topic={topic}
         sortBy={sortBy}
         order={order}
+        hasArticlesError={hasArticlesError}
       />
       {isLoading && (
         <ArticlesHeading isLoading>Loading {topic} articles...</ArticlesHeading>
       )}
-      {!isLoading && (
-        <ArticlesHeading>Showing {topic} articles</ArticlesHeading>
+
+      {!hasArticlesError && !isLoading && (
+        <ArticlesHeading>
+          Showing {topic === "select" ? "all" : topic} articles
+        </ArticlesHeading>
+      )}
+      {hasArticlesError && !isLoading && (
+        <ArticlesError error={articlesError} />
       )}
       <ArticlesList articles={articles} />
       {isLoading && <LoadingText />}

@@ -9,6 +9,8 @@ import Login from "./pages/login";
 import Header from "./components/Header";
 import Navigation from "./components/Navigation";
 
+import PageNotFound from "./pages/page-not-found/PageNotFound";
+
 export default function App() {
   return (
     <LoggedInUserProvider>
@@ -21,6 +23,7 @@ export default function App() {
             <Route path="/articles" element={<Articles />} />
             <Route path="/articles/:article_id" element={<Article />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/*" element={<PageNotFound />} />
           </Routes>
         </main>
       </Router>
