@@ -22,7 +22,7 @@ export default function Navigation() {
 
 function LinkButton({ children, link, variant }) {
   const className = {
-    active: "font-bold text-blue-500",
+    active: "font-bold text-blue-400",
     default: "font-semibold text-white",
   };
 
@@ -46,7 +46,7 @@ function LinkButton({ children, link, variant }) {
 function ButtonLogOut({ onClick }) {
   return (
     <button
-      className="flex-grow text-right font-bold text-red-500"
+      className="flex-grow text-right font-bold text-red-400"
       onClick={onClick}
     >
       Logout

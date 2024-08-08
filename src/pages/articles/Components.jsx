@@ -32,7 +32,7 @@ export function LoadingText() {
 
 export function ButtonMore({ onClick }) {
   return (
-    <button className="self-center text-blue-500 underline" onClick={onClick}>
+    <button className="self-center text-blue-600 underline" onClick={onClick}>
       More Articles...
     </button>
   );
