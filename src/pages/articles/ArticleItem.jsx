@@ -40,7 +40,7 @@ function Author({ author }) {
   return (
     <p>
       <span>By </span>
-      <Link className="text-blue-500 underline" to={`/users/${author}`}>
+      <Link className="text-blue-600 underline" to={`/users/${author}`}>
         {author}
       </Link>
     </p>

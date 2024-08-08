@@ -33,7 +33,7 @@ export function Author({ author }) {
   return (
     <p>
       <span>By </span>
-      <Link className="text-blue-500 underline" to={`/users/${author}`}>
+      <Link className="text-blue-600 underline" to={`/users/${author}`}>
         {author}
       </Link>
     </p>
@@ -164,11 +164,15 @@ export function CommentForm({ children }) {
 
 export function CommentInputField({ ...restProps }) {
   return (
-    <textarea
-      className="h-28 w-full resize-none rounded border border-gray-300 px-4 py-2"
-      placeholder="Write a public comment"
-      {...restProps}
-    ></textarea>
+    <>
+      <label htmlFor="comment-input">Write a public comment</label>
+      <textarea
+        id="comment-input"
+        className="h-28 w-full resize-none rounded border border-gray-300 px-4 py-2"
+        placeholder="Share your thoughts..."
+        {...restProps}
+      ></textarea>
+    </>
   );
 }
 
@@ -184,7 +188,7 @@ export function ButtonMoreComments({ setPage }) {
     <button
       onClick={handleMoreComments}
       id="btn-more-comments"
-      className="my-4 self-center text-blue-500 underline"
+      className="my-4 self-center text-blue-600 underline"
     >
       Load More Comments...
     </button>
