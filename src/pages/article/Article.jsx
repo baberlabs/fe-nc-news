@@ -4,6 +4,7 @@ import { useState } from "react";
 import Comments from "./Comments";
 
 import {
+  ArticleError,
   Topic,
   Heading,
   Author,
@@ -24,16 +25,20 @@ import useVotes from "./useVotes";
 
 export default function Article() {
   const { article_id } = useParams();
-  const { isLoading, article } = useArticle(article_id);
+  const { isLoading, article, articleError } = useArticle(article_id);
   const { currentVotes, setCurrentVotes } = useVotes(article.votes);
 
   const [votesError, setVotesError] = useState(false);
   const [votesNotLoggedInError, setVotesNotLoggedInError] = useState(false);
 
+  const hasArticleError = !isLoading && articleError.status;
+  const hasNoArticleError = !isLoading && !articleError.status;
+
   return (
     <section className="p-4 md:p-8">
       {isLoading && <ArticleLoadingText />}
-      {!isLoading && (
+      {hasArticleError && <ArticleError error={articleError} />}
+      {hasNoArticleError && (
         <div className="mx-auto flex max-w-[700px] flex-col gap-4">
           <Topic topic={article.topic} />
           <Heading title={article.title} />

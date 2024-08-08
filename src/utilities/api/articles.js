@@ -9,7 +9,10 @@ export function getArticles({ ...params }) {
 export function getArticleById(article_id) {
   return api
     .get(`/articles/${article_id}`)
-    .then((response) => response.data.article);
+    .then((response) => response.data.article)
+    .catch((error) => {
+      throw error;
+    });
 }
 
 export function voteArticle(article_id, inc_votes) {

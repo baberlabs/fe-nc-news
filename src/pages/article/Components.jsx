@@ -10,6 +10,17 @@ export function ArticleLoadingText() {
   return <p>Loading...</p>;
 }
 
+export function ArticleError({ error }) {
+  return (
+    <section className="flex justify-center pt-32">
+      <p className="flex flex-col items-center gap-1">
+        <span className="text-7xl font-bold text-gray-400">{error.status}</span>
+        <span className="font-bold">{error.message}</span>
+      </p>
+    </section>
+  );
+}
+
 export function Topic({ topic }) {
   return <p className="font-bold text-gray-500">#{topic}</p>;
 }

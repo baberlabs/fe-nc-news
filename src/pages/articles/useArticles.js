@@ -5,6 +5,7 @@ export function useArticles({ page, topic, sort_by, order }) {
   const [articles, setArticles] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [totalCount, setTotalCount] = useState(0);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     setIsLoading(true);
