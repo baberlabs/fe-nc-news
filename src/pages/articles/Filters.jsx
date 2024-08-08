@@ -1,12 +1,12 @@
 import useTopics from "./useTopics";
 
 import {
+  getTopicOptions,
   handleTopicChange,
   handleSortByChange,
   handleOrderChange,
+  isValidTopic,
 } from "./functions";
-
-import getTopicOptions from "../../utilities/getTopicOptions";
 
 export default function Filter({
   setPage,
@@ -14,18 +14,26 @@ export default function Filter({
   topic,
   sortBy,
   order,
+  hasArticlesError,
 }) {
   const { topics } = useTopics();
+
+  const topicValue = isValidTopic(topic, topics) ? topic : "select";
 
   return (
     <>
       <DropDown
         label="Topic"
         onChange={(e) => handleTopicChange(e, setPage, setSearchParams)}
-        value={topic}
+        value={topicValue}
       >
         <Options options={getTopicOptions(topics)} />
       </DropDown>
+      {hasArticlesError && (
+        <p className="self-end rounded-xl bg-red-200 px-4 py-2">
+          Please select a topic from the dropdown
+        </p>
+      )}
       <DropDown
         label="Sort by"
         onChange={(e) => handleSortByChange(e, setPage, setSearchParams)}
@@ -70,9 +78,11 @@ function DropDown({ children, label, ...restProps }) {
 }
 
 function Options({ options }) {
-  return Object.keys(options).map((value) => (
-    <option key={value} value={value}>
-      {options[value]}
-    </option>
-  ));
+  return Object.entries(options).map(([value, label]) => {
+    return (
+      <option key={value} value={value} disabled={value === "select"}>
+        {label}
+      </option>
+    );
+  });
 }

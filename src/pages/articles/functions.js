@@ -1,19 +1,14 @@
+import capitaliseString from "../../utilities/capitaliseString";
+
 export function handleTopicChange(e, setPage, setSearchParams) {
   setPage(1);
   const currentTopic = e.target.value;
-  if (currentTopic !== "all") {
-    setSearchParams((searchParams) => {
+  setSearchParams((searchParams) => {
+    if (currentTopic !== "select") {
       searchParams.set("topic", currentTopic);
-      return searchParams;
-    });
-  } else {
-    setSearchParams((searchParams) => {
-      if (searchParams.has("topic")) {
-        searchParams.delete("topic");
-        return searchParams;
-      }
-    });
-  }
+    }
+    return searchParams;
+  });
 }
 
 export function handleSortByChange(e, setPage, setSearchParams) {
@@ -36,4 +31,19 @@ export function handleOrderChange(e, setPage, setSearchParams) {
 
 export function loadMoreArticles(setPage) {
   setPage((previousPage) => previousPage + 1);
+}
+
+export function isValidTopic(topic, topics) {
+  return (
+    topic === "all" || topics.some((validTopic) => validTopic.slug === topic)
+  );
+}
+
+export function getTopicOptions(topics) {
+  const array = Object.values(topics).map((topic) => topic.slug);
+  const object = { select: "Select a topic", all: "All" };
+  for (const item of array) {
+    object[item] = capitaliseString(item);
+  }
+  return object;
 }

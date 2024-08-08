@@ -1,5 +1,15 @@
 import ArticleItem from "./ArticleItem";
-import capitaliseString from "../../utilities/capitaliseString";
+
+export function ArticlesError({ error }) {
+  return (
+    <section className="flex justify-center pt-32">
+      <p className="flex flex-col items-center gap-1">
+        <span className="text-7xl font-bold text-gray-400">{error.status}</span>
+        <span className="font-bold">{error.message}</span>
+      </p>
+    </section>
+  );
+}
 
 export function ArticlesHeading({ children, isLoading }) {
   const loading = isLoading ? "text-gray-400" : "";

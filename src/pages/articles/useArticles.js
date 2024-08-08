@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
 import { getArticles } from "../../utilities/api";
 
-export function useArticles({ page, topic, sort_by, order }) {
+export function useArticles({ page, topic, sort_by, order, setSearchParams }) {
   const [articles, setArticles] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [totalCount, setTotalCount] = useState(0);
-  const [error, setError] = useState(null);
+  const [articlesError, setArticlesError] = useState({});
+  const [hasArticlesError, setHasArticlesError] = useState(false);
 
   useEffect(() => {
     setIsLoading(true);
@@ -19,10 +20,15 @@ export function useArticles({ page, topic, sort_by, order }) {
             ...data.articles,
           ]);
         }
+        setHasArticlesError(false);
         setTotalCount(data.total_count);
       })
+      .catch((error) => {
+        setArticlesError(error);
+        setHasArticlesError(true);
+      })
       .finally(() => setIsLoading(false));
-  }, [page, topic, sort_by, order]);
+  }, [page, topic, sort_by, order, setSearchParams]);
 
-  return { isLoading, articles, totalCount };
+  return { isLoading, articles, articlesError, hasArticlesError, totalCount };
 }
