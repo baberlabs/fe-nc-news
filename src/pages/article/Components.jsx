@@ -5,6 +5,8 @@ import CommentItem from "./CommentItem";
 import formatDate from "../../utilities/formatDate";
 import { voteArticle } from "../../utilities/api";
 import { useLoggedInUser } from "../../contexts/LoggedInUserContext";
+import { ThumbDown, ThumbUp } from "@mui/icons-material";
+import { useState } from "react";
 
 export function ArticleLoadingText() {
   return <p>Loading...</p>;
@@ -70,18 +72,19 @@ export function ButtonsContainer({ children, self }) {
   return <div className={`flex flex-row gap-4 self-${self}`}>{children}</div>;
 }
 
-export function Button({
-  children,
-  color,
-  inc_votes,
+export function LikeButton({
   setCurrentVotes,
   setVotesError,
   setVotesNotLoggedInError,
 }) {
+  const [hasLiked, setHasLiked] = useState(() => {
+    return localStorage.getItem("nn-like") === "true";
+  });
+
   const { article_id } = useParams();
   const { loggedInUser } = useLoggedInUser();
 
-  function handleVote() {
+  function handleLike() {
     if (!loggedInUser?.username) {
       setVotesNotLoggedInError(true);
       setTimeout(() => {
@@ -89,30 +92,164 @@ export function Button({
       }, 3000);
       return;
     }
+
+    setHasLiked((prev) => !prev);
     setVotesNotLoggedInError(false);
-    if (inc_votes) {
-      setCurrentVotes((previousVotes) => previousVotes + inc_votes);
-      voteArticle(article_id, inc_votes).catch(() => {
-        setCurrentVotes((previousVotes) => previousVotes - inc_votes);
+
+    setCurrentVotes((prev) => {
+      if (hasLiked) {
+        return prev - 1;
+      } else {
+        return prev + 1;
+      }
+    });
+
+    const inc_votes = hasLiked ? -1 : 1;
+
+    voteArticle({ inc_votes, article_id })
+      .then(() => localStorage.setItem("nn-like", hasLiked ? false : true))
+      .catch(() => {
+        setHasLiked((prev) => !prev);
+        setCurrentVotes((prev) => {
+          if (hasLiked) {
+            return prev + 1;
+          } else {
+            return prev - 1;
+          }
+        });
         setVotesError(true);
         setTimeout(() => {
           setVotesError(false);
         }, 3000);
       });
-    }
   }
 
-  const colors = ["bg-blue-700", "bg-green-700"];
+  const color = hasLiked ? "text-green-600" : "text-black";
 
   return (
     <button
-      className={`w-fit rounded-xl bg-${color}-700 px-4 py-2 text-sm font-bold text-white`}
-      onClick={handleVote}
+      onClick={handleLike}
+      className={`${color} rounded bg-gray-200 px-4 py-2`}
     >
-      {children}
+      <ThumbUp />
     </button>
   );
 }
+
+export function DislikeButton({
+  setCurrentVotes,
+  setVotesError,
+  setVotesNotLoggedInError,
+}) {
+  // const dislike = ;
+
+  const [hasDisliked, setHasDisliked] = useState(() => {
+    return localStorage.getItem("nn-dislike") === "true";
+  });
+
+  const { article_id } = useParams();
+  const { loggedInUser } = useLoggedInUser();
+
+  function handleDislike() {
+    if (!loggedInUser?.username) {
+      setVotesNotLoggedInError(true);
+      setTimeout(() => {
+        setVotesNotLoggedInError(false);
+      }, 3000);
+      return;
+    }
+
+    setHasDisliked((prev) => !prev);
+    setVotesNotLoggedInError(false);
+
+    setCurrentVotes((prev) => {
+      if (hasDisliked) {
+        return prev + 1;
+      } else {
+        return prev - 1;
+      }
+    });
+
+    const inc_votes = hasDisliked ? 1 : -1;
+
+    voteArticle({ inc_votes, article_id })
+      .then(() =>
+        localStorage.setItem("nn-dislike", hasDisliked ? false : true),
+      )
+      .catch(() => {
+        setHasDisliked((prev) => !prev);
+        setCurrentVotes((prev) => {
+          if (hasDisliked) {
+            return prev - 1;
+          } else {
+            return prev + 1;
+          }
+        });
+        setVotesError(true);
+        setTimeout(() => {
+          setVotesError(false);
+        }, 3000);
+      });
+  }
+
+  const color = hasDisliked ? "text-red-600" : "text-black";
+
+  return (
+    <button
+      onClick={handleDislike}
+      className={`${color} rounded bg-gray-200 px-4 py-2`}
+    >
+      <ThumbDown />
+    </button>
+  );
+}
+
+// export function Button({
+//   children,
+//   hasUpvoted,
+//   setHasUpvoted,
+//   hasDownvoted,
+//   setHasDownvoted,
+//   inc_votes,
+//   setCurrentVotes,
+//   setVotesError,
+//   setVotesNotLoggedInError,
+// }) {
+//   const { article_id } = useParams();
+//   const { loggedInUser } = useLoggedInUser();
+
+//   function handleVote() {
+//     if (!loggedInUser?.username) {
+//       setVotesNotLoggedInError(true);
+//       setTimeout(() => {
+//         setVotesNotLoggedInError(false);
+//       }, 3000);
+//       return;
+//     }
+//     setVotesNotLoggedInError(false);
+//     if (inc_votes) {
+//       setCurrentVotes((previousVotes) => previousVotes + inc_votes);
+//       voteArticle(article_id, inc_votes).catch(() => {
+//         setCurrentVotes((previousVotes) => previousVotes - inc_votes);
+//         setVotesError(true);
+//         setTimeout(() => {
+//           setVotesError(false);
+//         }, 3000);
+//       });
+//     }
+//   }
+
+//   const colors = ["bg-blue-700", "bg-green-700"];
+
+//   return (
+//     <button
+//       className={`w-fit rounded-xl bg-gray-300 px-4 py-2 text-sm font-bold text-black`}
+//       onClick={handleVote}
+//     >
+//       {children}
+//     </button>
+//   );
+// }
 
 export function VotesErrorText() {
   return (

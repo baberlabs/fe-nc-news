@@ -16,8 +16,9 @@ import {
   VotesErrorText,
   VotesNotLoggedInErrorText,
   ButtonsContainer,
-  Button,
   ArticleLoadingText,
+  LikeButton,
+  DislikeButton,
 } from "./Components";
 
 import useArticle from "./useArticle";
@@ -52,30 +53,20 @@ export default function Article() {
             </Count>
             <Count label="comments">{article.comment_count}</Count>
           </CountsContainer>
+          <ButtonsContainer self="start">
+            <LikeButton
+              setCurrentVotes={setCurrentVotes}
+              setVotesError={setVotesError}
+              setVotesNotLoggedInError={setVotesNotLoggedInError}
+            />
+            <DislikeButton
+              setCurrentVotes={setCurrentVotes}
+              setVotesError={setVotesError}
+              setVotesNotLoggedInError={setVotesNotLoggedInError}
+            />
+          </ButtonsContainer>
           {votesError && <VotesErrorText />}
           {votesNotLoggedInError && <VotesNotLoggedInErrorText />}
-          <ButtonsContainer self="start">
-            <Button
-              color="green"
-              inc_votes={1}
-              votes={currentVotes}
-              setCurrentVotes={setCurrentVotes}
-              setVotesError={setVotesError}
-              setVotesNotLoggedInError={setVotesNotLoggedInError}
-            >
-              Upvote
-            </Button>
-            <Button
-              color="red"
-              inc_votes={-1}
-              votes={currentVotes}
-              setCurrentVotes={setCurrentVotes}
-              setVotesError={setVotesError}
-              setVotesNotLoggedInError={setVotesNotLoggedInError}
-            >
-              Downvote
-            </Button>
-          </ButtonsContainer>
           <Comments />
         </div>
       )}

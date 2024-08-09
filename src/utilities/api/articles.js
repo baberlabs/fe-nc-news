@@ -21,7 +21,7 @@ export function getArticleById(article_id) {
     });
 }
 
-export function voteArticle(article_id, inc_votes) {
+export function voteArticle({ article_id, inc_votes }) {
   return api
     .patch(`/articles/${article_id}`, { inc_votes })
     .then(({ data }) => data);
