@@ -13,17 +13,18 @@ export function useArticles({ page, topic, sort_by, order, setSearchParams }) {
     getArticles({ page, topic, sort_by, order })
       .then((data) => {
         if (page === 1) {
-          setArticles(data.articles);
+          setArticles(data?.articles);
         } else {
           setArticles((previousArticles) => [
             ...previousArticles,
-            ...data.articles,
+            ...data?.articles,
           ]);
         }
         setHasArticlesError(false);
-        setTotalCount(data.total_count);
+        setTotalCount(data?.total_count);
       })
       .catch((error) => {
+        console.log(error, "<---useArticles");
         setArticlesError(error);
         setHasArticlesError(true);
       })
