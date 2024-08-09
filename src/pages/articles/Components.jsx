@@ -16,7 +16,9 @@ export function ArticlesError({ error }) {
 
 export function ArticlesHeading({ children, isLoading }) {
   const loading = isLoading ? "text-gray-400" : "";
-  return <h2 className={`text-xl font-bold ${loading}`}>{children}</h2>;
+  return (
+    <h2 className={`text-xl font-bold ${loading} lg:text-2xl`}>{children}</h2>
+  );
 }
 
 export function ArticlesList({ articles }) {

@@ -40,7 +40,7 @@ export default function Articles() {
     totalCount <= articles?.length && !isLoading && !hasArticlesError;
 
   return (
-    <section className="flex flex-col gap-8 px-4 py-8">
+    <section className="mx-auto flex flex-col gap-8 px-4 py-8 md:max-w-[870px] lg:max-w-[1300px]">
       <Filters
         setPage={setPage}
         setSearchParams={setSearchParams}
