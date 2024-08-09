@@ -21,7 +21,7 @@ export default function Filter({
   const topicValue = isValidTopic(topic, topics) ? topic : "select";
 
   return (
-    <>
+    <section className="flex flex-col gap-4 md:mx-auto md:w-fit md:flex-row md:gap-16">
       <DropDown
         label="Topic"
         onChange={(e) => handleTopicChange(e, setPage, setSearchParams)}
@@ -56,7 +56,7 @@ export default function Filter({
           Please select valid options here
         </p>
       )}
-    </>
+    </section>
   );
 }
 

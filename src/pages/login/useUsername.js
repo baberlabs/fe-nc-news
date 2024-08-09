@@ -12,10 +12,11 @@ export default function useUsername(username) {
   useEffect(() => {
     if (username) {
       setIsLogging(true);
+      setIsError(false);
+      setIsSuccess(false);
       getUser(username)
         .then((user) => {
           setLoggedInUser(user);
-          setIsError(false);
           if (user) {
             setIsSuccess(true);
             setTimeout(() => {
@@ -25,13 +26,19 @@ export default function useUsername(username) {
         })
         .catch(() => {
           setLoggedInUser({});
-          setIsSuccess(false);
           setIsError(true);
           setTimeout(() => setIsError(false), 3000);
         })
         .finally(() => setIsLogging(false));
     }
-  }, [username]);
+  }, [username, setLoggedInUser]);
 
-  return { loggedInUser, isLogging, isSuccess, isError };
+  const reset = () => {
+    setIsLogging(false);
+    setIsError(false);
+    setIsSuccess(false);
+    setLoggedInUser({});
+  };
+
+  return { loggedInUser, isLogging, isSuccess, isError, reset };
 }

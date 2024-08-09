@@ -18,7 +18,6 @@ export default function Login() {
 
   const { loggedInUser, isLogging, isSuccess, isError } = useUsername(username);
 
-  console.log(isSuccess);
   return (
     <section className="flex flex-col items-center gap-16 p-4 md:p-8">
       <h2 className="mt-20 text-4xl font-black text-gray-500">Login</h2>

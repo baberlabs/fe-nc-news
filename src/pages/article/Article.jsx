@@ -16,12 +16,15 @@ import {
   VotesErrorText,
   VotesNotLoggedInErrorText,
   ButtonsContainer,
-  Button,
   ArticleLoadingText,
+  LikeButton,
+  DislikeButton,
 } from "./Components";
 
 import useArticle from "./useArticle";
 import useVotes from "./useVotes";
+import { SkipNext } from "@mui/icons-material";
+import { useArticles } from "../articles/useArticles";
 
 export default function Article() {
   const { article_id } = useParams();
@@ -35,7 +38,11 @@ export default function Article() {
   const hasNoArticleError = !isLoading && !articleError.status;
 
   return (
-    <section className="p-4 md:p-8">
+    <section className="flex flex-col p-4 md:p-8">
+      <button className="flex w-fit flex-row items-center justify-center gap-2 self-end rounded bg-black px-4 py-2 font-bold text-white">
+        <span>Next Article</span>
+        <SkipNext />
+      </button>
       {isLoading && <ArticleLoadingText />}
       {hasArticleError && <ArticleError error={articleError} />}
       {hasNoArticleError && (
@@ -52,30 +59,20 @@ export default function Article() {
             </Count>
             <Count label="comments">{article.comment_count}</Count>
           </CountsContainer>
+          <ButtonsContainer self="start">
+            <LikeButton
+              setCurrentVotes={setCurrentVotes}
+              setVotesError={setVotesError}
+              setVotesNotLoggedInError={setVotesNotLoggedInError}
+            />
+            <DislikeButton
+              setCurrentVotes={setCurrentVotes}
+              setVotesError={setVotesError}
+              setVotesNotLoggedInError={setVotesNotLoggedInError}
+            />
+          </ButtonsContainer>
           {votesError && <VotesErrorText />}
           {votesNotLoggedInError && <VotesNotLoggedInErrorText />}
-          <ButtonsContainer self="start">
-            <Button
-              color="green"
-              inc_votes={1}
-              votes={currentVotes}
-              setCurrentVotes={setCurrentVotes}
-              setVotesError={setVotesError}
-              setVotesNotLoggedInError={setVotesNotLoggedInError}
-            >
-              Upvote
-            </Button>
-            <Button
-              color="red"
-              inc_votes={-1}
-              votes={currentVotes}
-              setCurrentVotes={setCurrentVotes}
-              setVotesError={setVotesError}
-              setVotesNotLoggedInError={setVotesNotLoggedInError}
-            >
-              Downvote
-            </Button>
-          </ButtonsContainer>
           <Comments />
         </div>
       )}
