@@ -5,29 +5,33 @@ import { useLoggedInUser } from "../../contexts/LoggedInUserContext";
 
 export default function useUsername(username) {
   const [isError, setIsError] = useState(false);
-  const [hasLoggedIn, setHasLoggedIn] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
   const { loggedInUser, setLoggedInUser } = useLoggedInUser();
+  const [isLogging, setIsLogging] = useState(false);
 
   useEffect(() => {
     if (username) {
+      setIsLogging(true);
       getUser(username)
         .then((user) => {
           setLoggedInUser(user);
           setIsError(false);
           if (user) {
-            setHasLoggedIn(true);
+            setIsSuccess(true);
             setTimeout(() => {
-              setHasLoggedIn(false);
-            }, 2000);
+              setIsSuccess(false);
+            }, 3000);
           }
         })
         .catch(() => {
           setLoggedInUser({});
-          setHasLoggedIn(false);
+          setIsSuccess(false);
           setIsError(true);
-        });
+          setTimeout(() => setIsError(false), 3000);
+        })
+        .finally(() => setIsLogging(false));
     }
   }, [username]);
 
-  return { loggedInUser, hasLoggedIn, isError };
+  return { loggedInUser, isLogging, isSuccess, isError };
 }

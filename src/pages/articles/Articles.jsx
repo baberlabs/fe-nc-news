@@ -14,6 +14,8 @@ import {
   ArticlesError,
 } from "./Components";
 
+import { loadMoreArticles } from "./functions";
+
 export default function Articles() {
   const [searchParams, setSearchParams] = useSearchParams();
   const topic = searchParams.get("topic") || "select";
@@ -32,10 +34,10 @@ export default function Articles() {
     });
 
   const hasMoreArticles =
-    totalCount > articles.length && !isLoading && !hasArticlesError;
+    totalCount > articles?.length && !isLoading && !hasArticlesError;
 
   const hasNoMoreArticles =
-    totalCount <= articles.length && !isLoading && !hasArticlesError;
+    totalCount <= articles?.length && !isLoading && !hasArticlesError;
 
   return (
     <section className="flex flex-col gap-8 px-4 py-8">

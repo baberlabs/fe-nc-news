@@ -5,10 +5,7 @@ export function getArticles({ ...params }) {
     .get("/articles", { params: { ...params } })
     .then((response) => response.data)
     .catch((error) => {
-      throw {
-        status: error.response.status,
-        message: error.response.data.message,
-      };
+      console.log(error, "><<<");
     });
 }
 

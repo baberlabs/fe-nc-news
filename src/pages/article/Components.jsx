@@ -158,11 +158,21 @@ export function CommentsList({ comments, setComments }) {
   );
 }
 
-export function CommentForm({ children }) {
-  return <form className="flex flex-col gap-4">{children}</form>;
+export function CommentForm({ children, onSubmit }) {
+  return (
+    <form onSubmit={onSubmit} className="flex flex-col gap-4">
+      {children}
+    </form>
+  );
 }
 
-export function CommentInputField({ ...restProps }) {
+export function CommentInputField({ onSubmit, ...restProps }) {
+  function handleKeyDown(e) {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      onSubmit(e);
+    }
+  }
   return (
     <>
       <label htmlFor="comment-input">Write a public comment</label>
@@ -170,9 +180,21 @@ export function CommentInputField({ ...restProps }) {
         id="comment-input"
         className="h-28 w-full resize-none rounded border border-gray-300 px-4 py-2"
         placeholder="Share your thoughts..."
+        onKeyDown={handleKeyDown}
         {...restProps}
       ></textarea>
     </>
+  );
+}
+
+export function ButtonComment() {
+  return (
+    <button
+      type="submit"
+      className="self-end rounded-xl bg-blue-700 px-4 py-2 text-sm font-bold text-white"
+    >
+      Comment
+    </button>
   );
 }
 
@@ -197,18 +219,6 @@ export function ButtonMoreComments({ setPage }) {
 
 export function NoMoreComponentsText() {
   return <p className="my-4 self-center">No More Comments</p>;
-}
-
-export function ButtonComment({ submitComment }) {
-  return (
-    <button
-      onClick={submitComment}
-      type="submit"
-      className="self-end rounded-xl bg-blue-700 px-4 py-2 text-sm font-bold text-white"
-    >
-      Comment
-    </button>
-  );
 }
 
 export function ButtonCommentDisabled() {
