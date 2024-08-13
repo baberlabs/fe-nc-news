@@ -77,12 +77,16 @@ export function LikeButton({
   setVotesError,
   setVotesNotLoggedInError,
 }) {
-  const [hasLiked, setHasLiked] = useState(() => {
-    return localStorage.getItem("nn-like") === "true";
-  });
-
   const { article_id } = useParams();
   const { loggedInUser } = useLoggedInUser();
+
+  const [hasLiked, setHasLiked] = useState(() => {
+    return (
+      localStorage.getItem(
+        `nn-like-article-${article_id}-article-${loggedInUser.username}`,
+      ) === "true"
+    );
+  });
 
   function handleLike() {
     if (!loggedInUser?.username) {
@@ -107,7 +111,12 @@ export function LikeButton({
     const inc_votes = hasLiked ? -1 : 1;
 
     voteArticle({ inc_votes, article_id })
-      .then(() => localStorage.setItem("nn-like", hasLiked ? false : true))
+      .then(() =>
+        localStorage.setItem(
+          `nn-like-article-${article_id}-article-${loggedInUser.username}`,
+          hasLiked ? false : true,
+        ),
+      )
       .catch(() => {
         setHasLiked((prev) => !prev);
         setCurrentVotes((prev) => {
@@ -141,14 +150,16 @@ export function DislikeButton({
   setVotesError,
   setVotesNotLoggedInError,
 }) {
-  // const dislike = ;
-
-  const [hasDisliked, setHasDisliked] = useState(() => {
-    return localStorage.getItem("nn-dislike") === "true";
-  });
-
   const { article_id } = useParams();
   const { loggedInUser } = useLoggedInUser();
+
+  const [hasDisliked, setHasDisliked] = useState(() => {
+    return (
+      localStorage.getItem(
+        `nn-dislike-article-${article_id}-article-${loggedInUser.username}`,
+      ) === "true"
+    );
+  });
 
   function handleDislike() {
     if (!loggedInUser?.username) {
@@ -174,7 +185,10 @@ export function DislikeButton({
 
     voteArticle({ inc_votes, article_id })
       .then(() =>
-        localStorage.setItem("nn-dislike", hasDisliked ? false : true),
+        localStorage.setItem(
+          `nn-dislike-article-${article_id}-article-${loggedInUser.username}`,
+          hasDisliked ? false : true,
+        ),
       )
       .catch(() => {
         setHasDisliked((prev) => !prev);
