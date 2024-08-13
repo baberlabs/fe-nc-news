@@ -1,5 +1,5 @@
-import { useParams } from "react-router-dom";
-import { useState } from "react";
+import { Link, useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 import Comments from "./Comments";
 
@@ -23,8 +23,8 @@ import {
 
 import useArticle from "./useArticle";
 import useVotes from "./useVotes";
-import { SkipNext } from "@mui/icons-material";
 import { useArticles } from "../articles/useArticles";
+import useNextArticle from "./useNextArticle";
 
 export default function Article() {
   const { article_id } = useParams();
@@ -37,12 +37,21 @@ export default function Article() {
   const hasArticleError = !isLoading && articleError.status;
   const hasNoArticleError = !isLoading && !articleError.status;
 
+  const { articles } = useArticles(1);
+  const { nextArticle } = useNextArticle(article_id, articles);
+
   return (
-    <section className="flex flex-col p-4 md:p-8">
-      <button className="flex w-fit flex-row items-center justify-center gap-2 self-end rounded bg-black px-4 py-2 font-bold text-white">
-        <span>Next Article</span>
-        <SkipNext />
-      </button>
+    <section className="flex flex-col gap-4 p-4 md:p-8">
+      <Link
+        className="flex flex-col self-end rounded bg-gray-300 px-4 py-2 text-black hover:bg-black hover:text-white"
+        to={`/articles/${nextArticle?.article_id}`}
+      >
+        <span className="w-28 font-bold">Read Next:</span>
+        <span className="w-full">
+          {nextArticle?.title ? nextArticle.title : "Loading..."}
+        </span>
+      </Link>
+
       {isLoading && <ArticleLoadingText />}
       {hasArticleError && <ArticleError error={articleError} />}
       {hasNoArticleError && (
