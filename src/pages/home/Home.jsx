@@ -5,9 +5,12 @@ import { AccessTimeFilled, Comment, ThumbUp } from "@mui/icons-material";
 export default function Home() {
   return (
     <section className="flex flex-col px-4 py-8 text-center">
-      <h2 className="text-[8rem] font-black tracking-tighter text-red-600">
-        NN
+      <h2 className="text-[10rem] font-black tracking-tighter text-red-600">
+        BR
       </h2>
+      <p className="-mt-10 mb-5 text-4xl font-black text-red-600">
+        Baber's Reach
+      </p>
       <p className="text-xl">News from farthest reaches of the world</p>
       <div className="mt-8 flex flex-row flex-wrap justify-center gap-4">
         <ArticleLink
